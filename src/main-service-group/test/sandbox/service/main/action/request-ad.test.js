@@ -54,7 +54,7 @@ describe('action.main.request-ad', () => {
       }
     ]
     await holder.load(itemDefs)
-  }, 20 * 1000)
+  }, 60 * 1000)
 })
 
 const fpt = {

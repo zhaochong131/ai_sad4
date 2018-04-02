@@ -34,7 +34,7 @@ describe('action.fb-ad-account.create-ad', () => {
       }
     ]
     await holder.load(itemDefs)
-  }, 20 * 1000)
+  }, 60 * 1000)
 })
 
 // test data

@@ -127,7 +127,7 @@ describe('flow/busySitter', () => {
       }
     ]
     holder.load(itemDefs)
-  }, 20 * 1000)
+  }, 60 * 1000)
 
   it('should find busy sitters,check their spend and should not find overspend ad', (done) => {
     const itemDefs = [
@@ -185,7 +185,7 @@ describe('flow/busySitter', () => {
       }
     ]
     holder.load(itemDefs)
-  }, 20 * 1000)
+  }, 60 * 1000)
 })
 
 const fpt = {

@@ -92,7 +92,7 @@ describe('flow/idleSitter', () => {
       }
     ]
     holder.load(itemDefs)
-  }, 20 * 1000)
+  }, 60 * 1000)
 
   it('should fail to request budget from fatherColl', (done) => {
     const itemDefs = [
@@ -153,7 +153,7 @@ describe('flow/idleSitter', () => {
       }
     ]
     holder.load(itemDefs)
-  }, 20 * 1000)
+  }, 60 * 1000)
 
   it('should fail to request ad and return budget', (done) => {
     const itemDefs = [
@@ -232,7 +232,7 @@ describe('flow/idleSitter', () => {
       }
     ]
     holder.load(itemDefs)
-  }, 20 * 1000)
+  }, 60 * 1000)
 })
 
 const fpt = {
