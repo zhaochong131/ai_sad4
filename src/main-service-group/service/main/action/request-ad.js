@@ -13,7 +13,8 @@ const buildAction = require('n3h-action-builder')
 const chance = new Chance()
 const topics = {
   createAd: 'action.fb-ad-account.create-ad',
-  queryAdFields: 'action.fb-ad-account.query-ad-fields'
+  queryAdFields: 'action.fb-ad-account.query-ad-fields',
+  insert: 'action.ad.insert'
 }
 
 module.exports = {
@@ -39,7 +40,7 @@ module.exports = {
         })
         const adId = await message.call(topics.createAd, {params: pt})
         const fbAd = await message.call(topics.queryAdFields, {adId, fields: ['adset_id', 'campaign_id', 'effective_status']})
-        await adColl.insertOne({
+        await message.call(topics.insert, {
           _id: adId,
           adsetId: fbAd.adset_id,
           campaignId: fbAd.campaign_id,

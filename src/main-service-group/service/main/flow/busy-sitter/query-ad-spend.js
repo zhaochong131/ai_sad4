@@ -3,7 +3,8 @@ const Joi = require('joi')
 const buildValidator = require('n3h-joi-validator')
 
 const topics = {
-  queryAdSpend: 'action.fb-ad-account.query-ad-spend'
+  queryAdSpend: 'action.fb-ad-account.query-ad-spend',
+  updateSpend: 'action.ad.update-spend'
 }
 
 module.exports = {
@@ -25,6 +26,7 @@ module.exports = {
     async handler ({sitter}, message) {
       const {adId} = sitter
       const spend = await message.call(topics.queryAdSpend, {adId})
+      await message.call(topics.updateSpend, {adId, spend})
       this.emit.ok({sitter, spend: Number(spend)})
     }
   })

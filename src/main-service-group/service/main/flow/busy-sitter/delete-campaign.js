@@ -4,7 +4,8 @@ const buildValidator = require('n3h-joi-validator')
 
 const topics = {
   queryAdFields: 'action.fb-ad-account.query-ad-fields',
-  deleteCampaign: 'action.fb-ad-account.delete-campaign'
+  deleteCampaign: 'action.fb-ad-account.delete-campaign',
+  updateEffectiveStatus: 'action.ad.update-effective-status'
 }
 
 module.exports = {
@@ -29,7 +30,7 @@ module.exports = {
       const success = await message.call(topics.deleteCampaign, {campaignId: ad.campaignId})
       if (success) {
         const fbAd = await message.call(topics.queryAdFields, {adId, fields: ['effective_status']})
-        await adColl.updateOne({_id: adId}, {$set: {effectiveStatus: fbAd.effective_status}})
+        await message.call(topics.updateEffectiveStatus, {adId, effectiveStatus: fbAd.effective_status})
         this.emit.ok({sitter})
       } else this.emit.failed({sitter})
     }
