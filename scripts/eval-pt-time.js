@@ -9,7 +9,7 @@ const prettyMs = require('pretty-ms')
 const relativeFilepath = process.argv[2]
 const runCount = process.argv[3] || 1000
 const filepath = path.resolve(process.cwd(), relativeFilepath)
-const content = fs.readFileSync(filepath, {encode: 'utf-8'})
+const content = fs.readFileSync(filepath)
 const builder = safeEval(content, {module: {}})
 
 const st = new Date()
