@@ -1,13 +1,11 @@
 /*
 request an ad from one mother
  */
-const Chance = require('chance')
 const {ObjectID} = require('mongodb')
 const Joi = require('joi')
 const buildValidator = require('n3h-joi-validator')
 const buildAction = require('n3h-action-builder')
 
-const chance = new Chance()
 const topics = {
   createAd: 'action.fb-ad-account.create-ad',
   queryAdFields: 'action.fb-ad-account.query-ad-fields',
