@@ -1,7 +1,6 @@
 const Holder = require('the-holder')
 const buildSandboxCollItem = require('../../../lib/build-sandbox-coll-item')
 const itemDefinitions = require('../../../../../lib/item-definitions')
-const buildObjectGenerator = require('random-object-language')
 const {ObjectID} = require('mongodb')
 
 describe('flow/busySitter', () => {
@@ -22,6 +21,7 @@ describe('flow/busySitter', () => {
         'logger',
         'natsEx',
         'mongodb',
+        'service/pt/action/buildPts',
         'service/main/flow/busySitter/checkAdSpend',
         'service/main/flow/busySitter/deleteCampaign',
         'service/main/flow/busySitter/findBusySitters',
@@ -45,6 +45,7 @@ describe('flow/busySitter', () => {
           'coll/sitter',
           'coll/father',
           'coll/ad',
+          'service/pt/action/buildPts',
           'service/main/flow/busySitter/checkAdSpend',
           'service/main/flow/busySitter/deleteCampaign',
           'service/main/flow/busySitter/findBusySitters',
@@ -60,7 +61,7 @@ describe('flow/busySitter', () => {
         ],
         build: async ({natsEx, 'coll/sitter': sitterColl, 'coll/father': fatherColl, 'coll/ad': adColl}) => {
           const {insertedId: fatherId} = await fatherColl.insertOne({budget: 0})
-          const pt = await buildObjectGenerator(fpt)()
+          const [pt] = await natsEx.call('action.pt.build-pts', {builder: ptBuilderString})
           const adId = await natsEx.call('action.fb-ad-account.create-ad', {params: pt})
           const fbAd = await natsEx.call('action.fb-ad-account.query-ad-fields', {
             adId,
@@ -138,26 +139,34 @@ describe('flow/busySitter', () => {
         'logger',
         'natsEx',
         'mongodb',
+        'service/pt/action/buildPts',
         'service/main/flow/busySitter/checkAdSpend',
         'service/main/flow/busySitter/findBusySitters',
         'service/main/flow/busySitter/queryAdSpend',
+        'service/ad/action/updateSpend',
+        'service/ad/action/updateEffectiveStatus',
         'service/fbAdAccount/action/createAd',
         'service/fbAdAccount/action/queryAdSpend'
       ].includes(item.name)),
       buildSandboxCollItem('coll/sitter'),
+      buildSandboxCollItem('coll/ad'),
       {
         name: 'test',
         need: [
           'natsEx',
           'coll/sitter',
+          'coll/ad',
+          'service/pt/action/buildPts',
           'service/main/flow/busySitter/checkAdSpend',
           'service/main/flow/busySitter/findBusySitters',
           'service/main/flow/busySitter/queryAdSpend',
+          'service/ad/action/updateSpend',
+          'service/ad/action/updateEffectiveStatus',
           'service/fbAdAccount/action/createAd',
           'service/fbAdAccount/action/queryAdSpend'
         ],
         build: async ({natsEx, 'coll/sitter': sitterColl}) => {
-          const pt = await buildObjectGenerator(fpt)()
+          const [pt] = await natsEx.call('action.pt.build-pts', {builder: ptBuilderString})
           const adId = await natsEx.call('action.fb-ad-account.create-ad', {params: pt})
 
           const {insertedId: sitterId} = await sitterColl.insertOne({
@@ -190,10 +199,10 @@ describe('flow/busySitter', () => {
   }, 60 * 1000)
 })
 
-const fpt = {
-  'adset_spec': {
-    '@type': 'assigned',
-    'value': {
+const ptBuilderString = `
+module.exports = function () {
+  return {
+    'adset_spec': {
       'targeting': {
         'geo_locations': {
           'countries': [
@@ -266,11 +275,8 @@ const fpt = {
       'daily_budget': 5000,
       'status': 'ACTIVE',
       'name': 'SAD'
-    }
-  },
-  'creative': {
-    '@type': 'assigned',
-    'value': {
+    },
+    'creative': {
       'name': '主页帖中的广告 #6,072,102,338,398',
       'object_story_spec': {
         'page_id': '585757974886198',
@@ -286,14 +292,9 @@ const fpt = {
           }
         }
       }
-    }
-  },
-  'status': {
-    '@type': 'assigned',
-    'value': 'ACTIVE'
-  },
-  'name': {
-    '@type': 'assigned',
-    'value': 'SAD'
+    },
+    'status': 'ACTIVE',
+    'name': 'SAD'
   }
 }
+`
