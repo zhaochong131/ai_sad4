@@ -20,6 +20,8 @@ describe('flow/idleSitter', () => {
         'logger',
         'natsEx',
         'mongodb',
+        'service/pt/action/buildPts',
+        'service/ad/action/insert',
         'service/main/action/requestAd',
         'service/main/action/requestBudget',
         'service/main/action/returnBudget',
@@ -43,6 +45,8 @@ describe('flow/idleSitter', () => {
           'coll/father',
           'coll/mother',
           'coll/ad',
+          'service/pt/action/buildPts',
+          'service/ad/action/insert',
           'service/fbAdAccount/action/createAd',
           'service/main/action/requestAd',
           'service/main/action/requestBudget',
@@ -63,7 +67,7 @@ describe('flow/idleSitter', () => {
           }
         ) => {
           const {insertedId: fatherId} = await fatherColl.insertOne({budget: 100})
-          const {insertedId: motherId} = await motherColl.insertOne({fpt: fpt})
+          const {insertedId: motherId} = await motherColl.insertOne({ptBuilder: ptBuilderString})
           const {insertedId: sitterId} = await sitterColl.insertOne({
             fatherId: fatherId.toString(),
             motherId: motherId.toString(),
@@ -101,6 +105,8 @@ describe('flow/idleSitter', () => {
         'logger',
         'natsEx',
         'mongodb',
+        'service/pt/action/buildPts',
+        'service/ad/action/insert',
         'service/main/action/requestBudget',
         'service/main/flow/idleSitter/findIdleSitters',
         'service/main/flow/idleSitter/requestBudget'
@@ -117,6 +123,8 @@ describe('flow/idleSitter', () => {
           'coll/father',
           'coll/mother',
           'coll/ad',
+          'service/pt/action/buildPts',
+          'service/ad/action/insert',
           'service/main/action/requestBudget',
           'service/main/flow/idleSitter/findIdleSitters',
           'service/main/flow/idleSitter/requestBudget'
@@ -162,6 +170,8 @@ describe('flow/idleSitter', () => {
         'logger',
         'natsEx',
         'mongodb',
+        'service/pt/action/buildPts',
+        'service/ad/action/insert',
         'service/main/action/requestAd',
         'service/main/action/requestBudget',
         'service/main/action/returnBudget',
@@ -184,6 +194,8 @@ describe('flow/idleSitter', () => {
           'coll/father',
           'coll/mother',
           'coll/ad',
+          'service/pt/action/buildPts',
+          'service/ad/action/insert',
           'service/fbAdAccount/action/createAd',
           'service/main/action/requestAd',
           'service/main/action/requestBudget',
@@ -203,7 +215,7 @@ describe('flow/idleSitter', () => {
           }
         ) => {
           const {insertedId: fatherId} = await fatherColl.insertOne({budget: 100})
-          const {insertedId: motherId} = await motherColl.insertOne({fpt: {}})
+          const {insertedId: motherId} = await motherColl.insertOne({})
           const {insertedId: sitterId} = await sitterColl.insertOne({
             fatherId: fatherId.toString(),
             motherId: motherId.toString(),
@@ -235,10 +247,10 @@ describe('flow/idleSitter', () => {
   }, 60 * 1000)
 })
 
-const fpt = {
-  'adset_spec': {
-    '@type': 'assigned',
-    'value': {
+const ptBuilderString = `
+module.exports = function () {
+  return {
+    'adset_spec': {
       'targeting': {
         'geo_locations': {
           'countries': [
@@ -311,11 +323,8 @@ const fpt = {
       'daily_budget': 5000,
       'status': 'ACTIVE',
       'name': 'SAD'
-    }
-  },
-  'creative': {
-    '@type': 'assigned',
-    'value': {
+    },
+    'creative': {
       'name': '主页帖中的广告 #6,072,102,338,398',
       'object_story_spec': {
         'page_id': '585757974886198',
@@ -331,14 +340,9 @@ const fpt = {
           }
         }
       }
-    }
-  },
-  'status': {
-    '@type': 'assigned',
-    'value': 'ACTIVE'
-  },
-  'name': {
-    '@type': 'assigned',
-    'value': 'SAD'
+    },
+    'status': 'ACTIVE',
+    'name': 'SAD'
   }
 }
+`

@@ -21,6 +21,8 @@ describe('action.main.request-ad', () => {
         'logger',
         'natsEx',
         'mongodb',
+        'service/pt/action/buildPts',
+        'service/ad/action/insert',
         'service/main/action/requestAd',
         'service/fbAdAccount/action/createAd',
         'service/fbAdAccount/action/queryAdFields'
@@ -33,13 +35,15 @@ describe('action.main.request-ad', () => {
           'natsEx',
           'coll/mother',
           'coll/ad',
+          'service/pt/action/buildPts',
+          'service/ad/action/insert',
           'service/main/action/requestAd',
           'service/fbAdAccount/action/createAd',
           'service/fbAdAccount/action/queryAdFields'
         ],
         build: async ({natsEx, 'coll/mother': motherColl, 'coll/ad': adColl}) => {
           // setup data
-          const mother = {fpt: fpt}
+          const mother = {ptBuilder: ptBuilderString}
           const {insertedId: motherId} = await motherColl.insertOne(mother)
 
           // call action
@@ -57,10 +61,10 @@ describe('action.main.request-ad', () => {
   }, 60 * 1000)
 })
 
-const fpt = {
-  'adset_spec': {
-    '@type': 'assigned',
-    'value': {
+const ptBuilderString = `
+module.exports = function () {
+  return {
+    'adset_spec': {
       'targeting': {
         'geo_locations': {
           'countries': [
@@ -133,11 +137,8 @@ const fpt = {
       'daily_budget': 5000,
       'status': 'ACTIVE',
       'name': 'SAD'
-    }
-  },
-  'creative': {
-    '@type': 'assigned',
-    'value': {
+    },
+    'creative': {
       'name': '主页帖中的广告 #6,072,102,338,398',
       'object_story_spec': {
         'page_id': '585757974886198',
@@ -153,14 +154,9 @@ const fpt = {
           }
         }
       }
-    }
-  },
-  'status': {
-    '@type': 'assigned',
-    'value': 'ACTIVE'
-  },
-  'name': {
-    '@type': 'assigned',
-    'value': 'SAD'
+    },
+    'status': 'ACTIVE',
+    'name': 'SAD'
   }
 }
+`

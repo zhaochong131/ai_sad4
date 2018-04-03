@@ -4,5 +4,6 @@
 {
   _id: ObjectID,
   fpt: Object, // free param tree to generate ads
+  ptBuilder: String, // pt builder string
 }
 ```

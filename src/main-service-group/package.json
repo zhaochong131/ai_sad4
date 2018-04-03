@@ -23,7 +23,6 @@
     "n3h-load-items": "^1.1.0",
     "n3h-step-builder": "^1.1.0",
     "nats-ex": "^1.0.1",
-    "random-object-language": "^2.0.1",
     "recursive-readdir": "^2.2.2",
     "request-facebook": "^2.1.2",
     "safe-eval": "^0.3.0",
