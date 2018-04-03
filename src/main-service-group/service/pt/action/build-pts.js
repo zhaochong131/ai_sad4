@@ -23,7 +23,7 @@ module.exports = {
         count: Joi.number().optional().default(1)
       }),
       async handler ({builder: builderString, count}) {
-        const builder = safeEval(builderString)
+        const builder = safeEval(builderString, {module: {}})
         const pts = []
         for (let i = 0; i < count; i++) {
           pts.push(builder({_, moment, weighted}))
