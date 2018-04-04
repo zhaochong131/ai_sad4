@@ -1,4 +1,5 @@
 const Holder = require('the-holder')
+const filterDefs = require('n3h-filter-items')
 const allDefs = require('../../../../../lib/item-definitions')
 
 describe('action.pt.build-pts', () => {
@@ -13,12 +14,12 @@ describe('action.pt.build-pts', () => {
   })
 
   it('build some pts by pt builder', async () => {
-    const defs = allDefs.filter(def => [
+    const defs = filterDefs(allDefs, [
       'config',
       'logger',
       'natsEx',
       'service/pt/action/buildPts'
-    ].includes(def.name))
+    ])
     await holder.load(defs)
     const natsEx = await holder.getItem('natsEx')
     const pts = await natsEx.call('action.pt.build-pts', {
