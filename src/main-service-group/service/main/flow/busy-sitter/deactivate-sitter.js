@@ -57,6 +57,6 @@ module.exports = {
     }
 
     buildStep({...stepDefinition, follow: {step: 'check-ad-spend', case: 'ok.overspend'}})
-    buildStep({...stepDefinition, follow: {step: 'check-spend-speed', case: 'ok.dying'}})
+    buildStep({...stepDefinition, follow: {step: 'check-spend-speed', case: 'ok.too-low'}})
   }
 }

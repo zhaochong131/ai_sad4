@@ -3,8 +3,8 @@ const Joi = require('joi')
 const buildValidator = require('n3h-joi-validator')
 
 module.exports = {
-  need: ['natsEx', 'coll/ad'],
-  build: ({natsEx, 'coll/ad': adColl}) => buildStep({
+  need: ['natsEx', 'config', 'coll/ad'],
+  build: ({natsEx, config, 'coll/ad': adColl}) => buildStep({
     natsEx,
     serviceName: 'main',
     flowName: 'busy-sitter',
@@ -20,14 +20,14 @@ module.exports = {
       spend: Joi.number()
     }),
     async handler ({sitter, spend}) {
+      const {exemptionTime, minSpendSpeed} = config
       const {adId} = sitter
       const {createdAt} = await adColl.findOne({_id: adId})
       const now = new Date()
-      const runTime = now.getTime() - createdAt.getTime()
-      const speed = spend / runTime
-      const minSpeed = 0 // for the moment, may change in the future
-      if (runTime > 12 * 60 * 60 * 1000 && speed <= minSpeed) {
-        this.emit.okCase('dying', {sitter, spend})
+      const runTime = (now.getTime() - createdAt.getTime()) / 1000 / 60 / 60 / 24 // runTime is counted in days
+      const speed = spend / 100 / runTime
+      if (runTime > exemptionTime && speed <= minSpendSpeed) {
+        this.emit.okCase('too-low', {sitter, spend})
       } else {
         this.emit.ok({sitter, spend})
       }

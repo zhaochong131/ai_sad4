@@ -15,7 +15,10 @@ module.exports = {
         mongoCollFather: env.MONGO_COLL_FATHER,
         mongoCollMother: env.MONGO_COLL_MOTHER,
         mongoCollSitter: env.MONGO_COLL_SITTER,
-        mongoCollAd: env.MONGO_COLL_AD
+        mongoCollAd: env.MONGO_COLL_AD,
+
+        exemptionTime: env.EXEMPTION_TIME,
+        minSpendSpeed: env.MIN_SPEND_SPEED
       }
     }
   }
