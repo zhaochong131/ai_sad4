@@ -1,63 +1,36 @@
-const Holder = require('the-holder')
-const buildSandboxCollItem = require('../../../lib/build-sandbox-coll-item')
-const itemDefinitions = require('../../../../../lib/item-definitions')
+describe(__filename, () => {
+  let natsEx = null
+  let mongoClient = null
+  let motherColl = null
+  let adColl = null
 
-describe('action.main.request-ad', () => {
-  let holder = null
-
-  beforeEach(() => {
-    holder = new Holder()
+  beforeAll(async () => {
+    natsEx = await require('nats-ex').connect()
+    mongoClient = await require('mongodb').MongoClient.connect('mongodb://localhost:27017')
+    motherColl = mongoClient.db('test').collection('mothers')
+    adColl = mongoClient.db('test').collection('ads')
   })
 
-  afterEach(async () => {
-    await holder.close()
+  afterAll(() => {
+    return Promise.all([
+      natsEx.close(),
+      mongoClient.close(true)
+    ])
   })
 
-  test('request an ad from mother', async () => {
-    expect.assertions(3)
-    const itemDefs = [
-      ...itemDefinitions.filter(item => [
-        'config',
-        'logger',
-        'natsEx',
-        'mongodb',
-        'service/pt/action/buildPts',
-        'service/ad/action/insert',
-        'service/main/action/requestAd',
-        'service/fbAdAccount/action/createAd',
-        'service/fbAdAccount/action/queryAdFields'
-      ].includes(item.name)),
-      buildSandboxCollItem('coll/mother'),
-      buildSandboxCollItem('coll/ad'),
-      {
-        name: 'test',
-        need: [
-          'natsEx',
-          'coll/mother',
-          'coll/ad',
-          'service/pt/action/buildPts',
-          'service/ad/action/insert',
-          'service/main/action/requestAd',
-          'service/fbAdAccount/action/createAd',
-          'service/fbAdAccount/action/queryAdFields'
-        ],
-        build: async ({natsEx, 'coll/mother': motherColl, 'coll/ad': adColl}) => {
-          // setup data
-          const mother = {ptBuilder: ptBuilderString}
-          const {insertedId: motherId} = await motherColl.insertOne(mother)
+  it('should request an ad from mother', async () => {
+    // setup data
+    const mother = {ptBuilder: ptBuilderString}
+    const {insertedId: motherId} = await motherColl.insertOne(mother)
 
-          // call action
-          const adId = await natsEx.call('action.main.request-ad', {motherId: motherId.toString()})
+    // call action
+    const adId = await natsEx.call('action.main.request-ad', {motherId: motherId.toString()})
 
-          // check result
-          expect(typeof adId).toBe('string')
-          const {_id: foundId, effectiveStatus} = await adColl.findOne({_id: adId})
-          expect(foundId).toBe(adId)
-          expect(effectiveStatus).toBe('ACTIVE')
-        }
-      }
-    ]
-    await holder.load(itemDefs)
+    // check result
+    expect(typeof adId).toBe('string')
+    const {_id: foundId, effectiveStatus} = await adColl.findOne({_id: adId})
+    expect(foundId).toBe(adId)
+    expect(effectiveStatus).toBe('ACTIVE')
   }, 60 * 1000)
 })
 
