@@ -22,5 +22,5 @@ ${IMAGE} \
 bash /root/scripts/start-nats.sh; \
 bash /root/scripts/start-mongodb.sh; \
 npm start & \
-jest ${TEST_ARGS}; \
+jest --runInBand ${TEST_ARGS}; \
 "

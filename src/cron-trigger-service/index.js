@@ -1,16 +1,13 @@
 const Holder = require('the-holder')
 const logger = require('simple-json-logger')
+const loadItems = require('n3h-load-items')
 
-const itemDefs = [
-  require('./items/config'),
-  require('./items/logger'),
-  require('./items/nats-ex'),
-  require('./items/cron-trigger')
-]
+const itemDefs = loadItems(__dirname + '/items')
 
 async function main () {
   const holder = new Holder({logger})
   await holder.load(itemDefs)
+  logger.info('holder started', {pid: process.pid})
 }
 
 main().catch((err) => {

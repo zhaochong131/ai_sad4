@@ -1,11 +1,10 @@
 {
   "name": "main-service-group",
-  "version": "1.1.5",
   "main": "index.js",
   "scripts": {
     "dev": "nodemon .",
     "start": "node .",
-    "test": "bash bin/sandbox-test.sh --runInBand",
+    "test": "bash bin/sandbox-test.sh",
     "test-all": "bash bin/sandbox-test-all.sh",
     "lint": "eslint .",
     "fix": "eslint . --fix"
