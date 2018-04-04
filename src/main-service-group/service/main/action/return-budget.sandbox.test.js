@@ -16,29 +16,17 @@ describe(__filename, () => {
     ])
   })
 
-  it('should request an amount of budget from the father', async () => {
+  it('should return an amount of budget to the father', async () => {
     // setup data
     const father = {budget: 100}
     const {insertedId: fatherId} = await fatherColl.insertOne(father)
     const amount = 66
 
     // call action
-    const allocation = await natsEx.call('action.main.request-budget', {fatherId: fatherId.toString(), amount})
+    await natsEx.call('action.main.return-budget', {fatherId: fatherId.toString(), amount})
 
     // check
-    expect(allocation).toBe(66)
-  })
-
-  it('should only get remaining budget', async () => {
-    // setup data
-    const father = {budget: 66}
-    const {insertedId: fatherId} = await fatherColl.insertOne(father)
-    const amount = 100
-
-    // call action
-    const allocation = await natsEx.call('action.main.request-budget', {fatherId: fatherId.toString(), amount})
-
-    // check
-    expect(allocation).toBe(66)
+    const fatherAfterAction = await fatherColl.findOne({_id: fatherId})
+    expect(fatherAfterAction.budget).toBe(166)
   })
 })
