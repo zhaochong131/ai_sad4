@@ -2,7 +2,7 @@ const Holder = require('the-holder')
 const buildSandboxCollItem = require('../../../lib/build-sandbox-coll-item')
 const itemDefinitions = require('../../../../../lib/item-definitions')
 
-describe('flow/idleSitter', () => {
+describe.skip('flow/idleSitter', () => {
   let holder = null
 
   beforeEach(() => {

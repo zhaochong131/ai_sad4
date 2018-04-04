@@ -21,6 +21,5 @@ ${IMAGE} \
 /bin/bash -c " \
 bash /root/scripts/start-nats.sh; \
 bash /root/scripts/start-mongodb.sh; \
-npm start & \
 jest --runInBand ${TEST_ARGS}; \
 "

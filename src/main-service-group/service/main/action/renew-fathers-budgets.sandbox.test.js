@@ -1,22 +1,25 @@
-describe(__filename, () => {
-  let natsEx = null
-  let mongoClient = null
-  let fatherColl = null
+const Holder = require('the-holder')
+const allDefs = require('../../../lib/item-definitions')
+const filterDefs = require('n3h-filter-items')
 
-  beforeAll(async () => {
-    natsEx = await require('nats-ex').connect()
-    mongoClient = await require('mongodb').MongoClient.connect('mongodb://localhost:27017')
-    fatherColl = mongoClient.db('test').collection('fathers')
+describe(__filename, () => {
+  let holder = null
+
+  beforeEach(async () => {
+    holder = new Holder()
   })
 
-  afterAll(() => {
-    return Promise.all([
-      natsEx.close(),
-      mongoClient.close(true)
-    ])
+  afterEach(() => {
+    return holder.close()
   })
 
   it('should renew the budgets of all fathers', async () => {
+    await holder.load(filterDefs(allDefs, [
+      'service/main/action/renewFathersBudgets'
+    ]))
+    const natsEx = holder.getItem('natsEx')
+    const fatherColl = holder.getItem('coll/father')
+
     // setup data
     const father = {budget: 100, newBudget: 666}
     const {insertedId: fatherId} = await fatherColl.insertOne(father)

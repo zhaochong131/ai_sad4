@@ -1,24 +1,30 @@
-describe(__filename, () => {
-  let natsEx = null
-  let mongoClient = null
-  let motherColl = null
-  let adColl = null
+const Holder = require('the-holder')
+const allDefs = require('../../../lib/item-definitions')
+const filterDefs = require('n3h-filter-items')
 
-  beforeAll(async () => {
-    natsEx = await require('nats-ex').connect()
-    mongoClient = await require('mongodb').MongoClient.connect('mongodb://localhost:27017')
-    motherColl = mongoClient.db('test').collection('mothers')
-    adColl = mongoClient.db('test').collection('ads')
+describe(__filename, () => {
+  let holder = null
+
+  beforeEach(async () => {
+    holder = new Holder()
   })
 
-  afterAll(() => {
-    return Promise.all([
-      natsEx.close(),
-      mongoClient.close(true)
-    ])
+  afterEach(() => {
+    return holder.close()
   })
 
   it('should request an ad from mother', async () => {
+    await holder.load(filterDefs(allDefs, [
+      'service/pt/action/buildPts',
+      'service/fbAdAccount/action/createAd',
+      'service/fbAdAccount/action/queryAdFields',
+      'service/ad/action/insert',
+      'service/main/action/requestAd'
+    ]))
+    const natsEx = holder.getItem('natsEx')
+    const motherColl = holder.getItem('coll/mother')
+    const adColl = holder.getItem('coll/ad')
+
     // setup data
     const mother = {ptBuilder: ptBuilderString}
     const {insertedId: motherId} = await motherColl.insertOne(mother)

@@ -1,15 +1,24 @@
-describe(__filename, () => {
-  let natsEx = null
+const Holder = require('the-holder')
+const allDefs = require('../../../lib/item-definitions')
+const filterDefs = require('n3h-filter-items')
 
-  beforeAll(async () => {
-    natsEx = await require('nats-ex').connect()
+describe(__filename, () => {
+  let holder = null
+
+  beforeEach(async () => {
+    holder = new Holder()
   })
 
-  afterAll(() => {
-    return natsEx.close()
+  afterEach(() => {
+    return holder.close()
   })
 
   it('should create an ad and return the adId', async () => {
+    await holder.load(filterDefs(allDefs, [
+      'service/fbAdAccount/action/createAd'
+    ]))
+    const natsEx = holder.getItem('natsEx')
+
     const adId = await natsEx.call('action.fb-ad-account.create-ad', {params: pt})
     expect(typeof adId).toBe('string')
   }, 60 * 1000)

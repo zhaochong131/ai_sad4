@@ -3,7 +3,7 @@ const buildSandboxCollItem = require('../../../lib/build-sandbox-coll-item')
 const itemDefinitions = require('../../../../../lib/item-definitions')
 const {ObjectID} = require('mongodb')
 
-describe('flow/busySitter', () => {
+describe.skip('flow/busySitter', () => {
   let holder = null
 
   beforeEach(() => {

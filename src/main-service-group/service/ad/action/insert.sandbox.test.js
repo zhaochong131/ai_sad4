@@ -1,25 +1,26 @@
+const Holder = require('the-holder')
+const allDefs = require('../../../lib/item-definitions')
+const filterDefs = require('n3h-filter-items')
 const uuid = require('uuid')
 
 describe(__filename, () => {
-  let natsEx = null
-  let mongoClient = null
-  let adColl = null
+  let holder = null
 
-  beforeAll(async () => {
-    natsEx = await require('nats-ex').connect()
-
-    mongoClient = await require('mongodb').MongoClient.connect('mongodb://localhost:27017')
-    adColl = mongoClient.db('test').collection('ads')
+  beforeEach(async () => {
+    holder = new Holder()
   })
 
-  afterAll(() => {
-    return Promise.all([
-      natsEx.close(),
-      mongoClient.close(true)
-    ])
+  afterEach(() => {
+    return holder.close()
   })
 
   it('should insert one ad doc in adColl', async () => {
+    await holder.load(filterDefs(allDefs, [
+      'service/ad/action/insert'
+    ]))
+    const natsEx = holder.getItem('natsEx')
+    const adColl = holder.getItem('coll/ad')
+
     const adId = uuid.v4()
     await natsEx.call('action.ad.insert',
       {

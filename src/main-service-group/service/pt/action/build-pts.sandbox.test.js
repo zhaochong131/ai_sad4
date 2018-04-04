@@ -1,15 +1,24 @@
-describe(__filename, () => {
-  let natsEx = null
+const Holder = require('the-holder')
+const allDefs = require('../../../lib/item-definitions')
+const filterDefs = require('n3h-filter-items')
 
-  beforeAll(async () => {
-    natsEx = await require('nats-ex').connect()
+describe(__filename, () => {
+  let holder = null
+
+  beforeEach(async () => {
+    holder = new Holder()
   })
 
-  afterAll(() => {
-    return natsEx.close()
+  afterEach(() => {
+    return holder.close()
   })
 
   it('build some pts by pt builder', async () => {
+    await holder.load(filterDefs(allDefs, [
+      'service/pt/action/buildPts'
+    ]))
+    const natsEx = holder.getItem('natsEx')
+
     const pts = await natsEx.call('action.pt.build-pts', {
       builder: ptBuilder,
       count: 100
