@@ -17,8 +17,6 @@ async function main () {
     logger.info('Goodbye')
     process.exit(0)
   })
-
-  logger.info('holder started', {pid: process.pid})
 }
 
 main().catch(err => {

@@ -15,7 +15,7 @@ describe(__filename, () => {
   afterAll(() => {
     return Promise.all([
       natsEx.close(),
-      mongoClient.close(true),
+      mongoClient.close(true)
     ])
   })
 
@@ -31,4 +31,3 @@ describe(__filename, () => {
     expect(new Date() - updatedAt).toBeLessThan(1000)
   })
 })
-

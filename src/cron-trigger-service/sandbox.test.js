@@ -1,8 +1,9 @@
 const Holder = require('the-holder')
 const loadItems = require('n3h-load-items')
 const uuid = require('uuid')
+const path = require('path')
 
-const defs = loadItems({dirname: __dirname + '/items'})
+const defs = loadItems({dirname: path.resolve(__dirname, 'items')})
 
 describe(__filename, () => {
   let holder = null
