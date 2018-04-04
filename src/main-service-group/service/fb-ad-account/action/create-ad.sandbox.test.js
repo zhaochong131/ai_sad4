@@ -1,39 +1,17 @@
-const Holder = require('the-holder')
-const itemDefinitions = require('../../../../../lib/item-definitions')
+describe(__filename, () => {
+  let natsEx = null
 
-describe('action.fb-ad-account.create-ad', () => {
-  let holder = null
-
-  beforeEach(() => {
-    holder = new Holder()
+  beforeAll(async () => {
+    natsEx = await require('nats-ex').connect()
   })
 
-  afterEach(async () => {
-    await holder.close()
+  afterAll(() => {
+    return natsEx.close()
   })
 
   it('should create an ad and return the adId', async () => {
-    expect.assertions(1)
-    const itemDefs = [
-      ...itemDefinitions.filter(item => [
-        'config',
-        'logger',
-        'natsEx',
-        'service/fbAdAccount/action/createAd'
-      ].includes(item.name)),
-      {
-        name: 'test',
-        need: [
-          'natsEx',
-          'service/fbAdAccount/action/createAd' // make sure this item is loaded before test
-        ],
-        build: async ({natsEx}) => {
-          const adId = await natsEx.call('action.fb-ad-account.create-ad', {params: pt})
-          expect(typeof adId).toBe('string')
-        }
-      }
-    ]
-    await holder.load(itemDefs)
+    const adId = await natsEx.call('action.fb-ad-account.create-ad', {params: pt})
+    expect(typeof adId).toBe('string')
   }, 60 * 1000)
 })
 
