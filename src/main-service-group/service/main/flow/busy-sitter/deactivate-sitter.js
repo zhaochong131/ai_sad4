@@ -15,12 +15,22 @@ const cases = {
 
 module.exports = {
   need: ['natsEx', 'coll/ad', 'coll/father', 'coll/sitter'],
-  build: ({natsEx, 'coll/ad': adColl, 'coll/father': fatherColl, 'coll/sitter': sitterColl}) => {
-    const stepDefinition = {
+  build: (items) => {
+    const {
+      natsEx,
+      'coll/ad': adColl,
+      'coll/father': fatherColl,
+      'coll/sitter': sitterColl
+    } = items
+    return buildStep({
       natsEx,
       serviceName: 'main',
       flowName: 'busy-sitter',
       stepName: 'deactivate-sitter',
+      follow: [
+        {step: 'check-ad-spend', case: 'overspend'},
+        {step: 'check-spend-speed', case: 'too-low'}
+      ],
       validator: buildValidator({
         sitter: {
           _id: Joi.string(),
@@ -58,9 +68,6 @@ module.exports = {
 
         this.emit(cases.ok, {sitter})
       }
-    }
-
-    buildStep({...stepDefinition, follow: {step: 'check-ad-spend', case: 'overspend'}})
-    buildStep({...stepDefinition, follow: {step: 'check-spend-speed', case: 'too-low'}})
+    })
   }
 }
