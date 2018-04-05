@@ -7,6 +7,10 @@ const topics = {
   updateSpend: 'action.ad.update-spend'
 }
 
+const cases = {
+  ok: 'ok'
+}
+
 module.exports = {
   need: ['natsEx'],
   build: ({natsEx}) => buildStep({
@@ -27,7 +31,7 @@ module.exports = {
       const {adId} = sitter
       const spend = await message.call(topics.queryAdSpend, {adId})
       await message.call(topics.updateSpend, {adId, spend})
-      this.emit.ok({sitter, spend: Number(spend)})
+      this.emit(cases.ok, {sitter, spend: Number(spend)})
     }
   })
 }

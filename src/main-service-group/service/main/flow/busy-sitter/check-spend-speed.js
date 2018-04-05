@@ -2,9 +2,14 @@ const buildStep = require('n3h-step-builder')
 const Joi = require('joi')
 const buildValidator = require('n3h-joi-validator')
 
+const cases = {
+  ok: 'ok',
+  tooLow: 'too-low'
+}
+
 module.exports = {
-  need: ['natsEx', 'config', 'coll/ad'],
-  build: ({natsEx, config, 'coll/ad': adColl}) => buildStep({
+  need: ['natsEx', 'coll/ad'],
+  build: ({natsEx, 'coll/ad': adColl}) => buildStep({
     natsEx,
     serviceName: 'main',
     flowName: 'busy-sitter',
@@ -15,21 +20,26 @@ module.exports = {
     },
     validator: buildValidator({
       sitter: {
-        adId: Joi.string()
+        adId: Joi.string(),
+        minSpendSpeed: Joi.number(),
+        spendSpeedProtectionTime: Joi.number()
       },
       spend: Joi.number()
     }),
     async handler ({sitter, spend}) {
-      const {exemptionTime, minSpendSpeed} = config
-      const {adId} = sitter
+      const {
+        adId,
+        minSpendSpeed,
+        spendSpeedProtectionTime
+      } = sitter
       const {createdAt} = await adColl.findOne({_id: adId})
       const now = new Date()
-      const runTime = (now.getTime() - createdAt.getTime()) / 1000 / 60 / 60 / 24 // runTime is counted in days
-      const speed = spend / 100 / runTime
-      if (runTime > exemptionTime && speed <= minSpendSpeed) {
-        this.emit.okCase('too-low', {sitter, spend})
+      const runTime = (now - createdAt) / (1000 * 60 * 60) // hours
+      const speed = (spend / 100) / runTime // dollars per hour
+      if (runTime >= spendSpeedProtectionTime && speed <= minSpendSpeed) {
+        this.emit(cases.tooLow, {sitter, spend})
       } else {
-        this.emit.ok({sitter, spend})
+        this.emit(cases.ok, {sitter, spend})
       }
     }
   })

@@ -2,6 +2,11 @@ const buildStep = require('n3h-step-builder')
 const Joi = require('joi')
 const buildValidator = require('n3h-joi-validator')
 
+const cases = {
+  ok: 'ok',
+  overspend: 'overspend'
+}
+
 module.exports = {
   need: ['natsEx'],
   build: ({natsEx}) => buildStep({
@@ -24,9 +29,9 @@ module.exports = {
       const {budget, closeBudgetRate} = sitter
       const overspend = spend > (budget * closeBudgetRate)
       if (overspend) {
-        this.emit.okCase('overspend', {sitter, spend})
+        this.emit(cases.overspend, {sitter, spend})
       } else {
-        this.emit.ok({sitter, spend})
+        this.emit(cases.ok, {sitter, spend})
       }
     }
   })

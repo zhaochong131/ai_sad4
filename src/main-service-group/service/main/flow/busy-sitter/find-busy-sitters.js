@@ -5,6 +5,11 @@ find all busy setters and dispatch them
 
 const buildStep = require('n3h-step-builder')
 
+const cases = {
+  ok: 'ok',
+  empty: 'empty'
+}
+
 module.exports = {
   need: ['natsEx', 'coll/sitter'],
   build: ({natsEx, 'coll/sitter': sitterColl}) => buildStep({
@@ -15,10 +20,10 @@ module.exports = {
     async handler () {
       const sitters = await sitterColl.find({status: 'busy'}).toArray()
       if (sitters.length === 0) {
-        this.emit.okCase('empty')
+        this.emit(cases.empty)
       } else {
         sitters.forEach(sitter => {
-          this.emit.ok({sitter})
+          this.emit(cases.ok, {sitter})
         })
       }
     }
