@@ -4,7 +4,8 @@
   "scripts": {
     "dev": "nodemon .",
     "start": "node .",
-    "test-offline": "bash bin/offline-test.sh --config ./jest.config.offline.js",
+    "jest": "jest",
+    "test-offline": "jest --config ./jest.config.offline.js",
     "test-sandbox": "bash bin/sandbox-test.sh --config ./jest.config.sandbox.js --runInBand",
     "test-sandbox-parallel": "bash bin/sandbox-test-parallel.sh",
     "lint": "eslint .",
@@ -40,6 +41,7 @@
     "eslint-plugin-node": "^6.0.1",
     "eslint-plugin-promise": "^3.7.0",
     "eslint-plugin-standard": "^3.0.1",
+    "jest": "^22.4.3",
     "n3h-check-flow": "^1.0.0",
     "nodemon": "^1.17.2",
     "uuid": "^3.2.1"

@@ -21,5 +21,5 @@ ${IMAGE} \
 /bin/bash -c " \
 bash /root/scripts/start-nats.sh; \
 bash /root/scripts/start-mongodb.sh; \
-jest ${TEST_ARGS}; \
+npm run jest -- ${TEST_ARGS}; \
 "

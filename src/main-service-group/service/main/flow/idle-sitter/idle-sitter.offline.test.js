@@ -16,7 +16,7 @@ describe(__filename, () => {
         ['request-budget', 'find-idle-sitters', 'ok'],
         ['request-ad', 'request-budget', 'ok'],
         ['activate-sitter', 'request-ad', 'ok'],
-        ['return-budget', 'request-ad', 'failed'],
+        ['return-budget', 'request-ad', 'failed']
       ]
     })
   })
