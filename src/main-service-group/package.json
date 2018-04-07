@@ -4,8 +4,9 @@
   "scripts": {
     "dev": "nodemon .",
     "start": "node .",
-    "test-sandbox": "bash bin/sandbox-test.sh",
-    "test-sandbox-all": "bash bin/sandbox-test-all.sh",
+    "test-offline": "bash bin/offline-test.sh --config ./jest.config.offline.js",
+    "test-sandbox": "bash bin/sandbox-test.sh --config ./jest.config.sandbox.js --runInBand",
+    "test-sandbox-parallel": "bash bin/sandbox-test-parallel.sh",
     "lint": "eslint .",
     "fix": "eslint . --fix"
   },
