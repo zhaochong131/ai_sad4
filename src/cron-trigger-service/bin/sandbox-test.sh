@@ -12,5 +12,5 @@ docker run -it --rm \
 ${IMAGE} \
 /bin/bash -c " \
 bash /root/scripts/start-nats.sh; \
-jest ${TEST_ARGS}; \
+npm run jest -- ${TEST_ARGS}; \
 "

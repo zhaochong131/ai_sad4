@@ -4,6 +4,7 @@
   "scripts": {
     "dev": "nodemon .",
     "start": "node .",
+    "jest": "jest",
     "test-sandbox": "bash bin/sandbox-test.sh --runInBand",
     "lint": "eslint .",
     "fix": "eslint . --fix"
@@ -24,6 +25,7 @@
     "eslint-plugin-node": "^6.0.1",
     "eslint-plugin-promise": "^3.7.0",
     "eslint-plugin-standard": "^3.0.1",
+    "jest": "^22.4.3",
     "nodemon": "^1.17.2",
     "uuid": "^3.2.1"
   }
