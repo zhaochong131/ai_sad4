@@ -3,11 +3,14 @@ const gracedown = require('grace-down')
 const logger = require('simple-json-logger')
 
 const itemDefinitions = require('./lib/item-definitions')
+const itemAdapters = require('./lib/item-adapters')
 
 async function main () {
-  const holder = new Holder({logger})
+  const holder = new Holder({
+    logger: logger,
+    adapters: itemAdapters
+  })
 
-  // load items
   await holder.load(itemDefinitions)
 
   // setup graceful shutdown

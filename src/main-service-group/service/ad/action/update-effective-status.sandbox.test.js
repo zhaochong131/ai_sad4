@@ -1,13 +1,14 @@
 const Holder = require('the-holder')
-const allDefs = require('../../../lib/item-definitions')
 const filterDefs = require('n3h-filter-items')
 const uuid = require('uuid')
+const allDefs = require('../../../lib/item-definitions')
+const adapters = require('../../../lib/item-adapters')
 
 describe(__filename, () => {
   let holder = null
 
   beforeEach(async () => {
-    holder = new Holder()
+    holder = new Holder({adapters})
   })
 
   afterEach(() => {
