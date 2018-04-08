@@ -5,8 +5,10 @@
     "dev": "nodemon .",
     "start": "node .",
     "jest": "jest",
-    "test-sandbox": "bash bin/sandbox-test.sh --runInBand",
+    "test-sandbox": "jest",
+    "test-sandbox-docker": "bash bin/test-sandbox-docker.sh",
     "test": "npm run test-sandbox",
+    "test-docker": "npm run test-sandbox-docker",
     "lint": "eslint .",
     "fix": "eslint . --fix"
   },
