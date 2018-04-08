@@ -11,9 +11,6 @@ module.exports = {
     sitterId: Joi.string(),
     status: Joi.string()
   }),
-  emitCases: {
-    ok: 'ok'
-  },
   async handler ({sitterId, status}) {
     const {'coll/sitter': sitterColl} = this.items
     await sitterColl.updateOne({_id: ObjectID(sitterId)}, {
@@ -21,6 +18,5 @@ module.exports = {
         status: status
       }
     })
-    this.emit.ok({sitterId, status})
   }
 }

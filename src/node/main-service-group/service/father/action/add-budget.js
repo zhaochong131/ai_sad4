@@ -11,9 +11,6 @@ module.exports = {
     fatherId: Joi.string(),
     amount: Joi.number()
   }),
-  emitCases: {
-    ok: 'ok'
-  },
   async handler ({fatherId, amount}) {
     const {'coll/father': fatherColl} = this.items
     await fatherColl.updateOne({_id: ObjectID(fatherId)}, {
@@ -21,6 +18,5 @@ module.exports = {
         budget: amount
       }
     })
-    this.emit.ok({fatherId, amount})
   }
 }

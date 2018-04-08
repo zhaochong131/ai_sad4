@@ -15,7 +15,7 @@ describe(__filename, () => {
   })
 
   it('should update status of given sitter', async () => {
-    expect.assertions(3)
+    expect.assertions(1)
 
     await holder.load(filterDefs(allDefs, [
       'service/sitter/action/setStatus'
@@ -26,12 +26,6 @@ describe(__filename, () => {
     // setup data
     const sitter = {status: 'busy'}
     const {insertedId: sitterId} = await sitterColl.insertOne(sitter)
-
-    // check side message
-    natsEx.on('action.sitter.set-status.ok', (data) => {
-      expect(data.sitterId).toBe(sitterId.toString())
-      expect(data.status).toBe('idle')
-    })
 
     // call action
     await natsEx.call('action.sitter.set-status', {

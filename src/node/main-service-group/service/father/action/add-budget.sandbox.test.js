@@ -15,7 +15,7 @@ describe(__filename, () => {
   })
 
   it('should add budget', async () => {
-    expect.assertions(3)
+    expect.assertions(1)
 
     await holder.load(filterDefs(allDefs, [
       'service/father/action/addBudget'
@@ -27,12 +27,6 @@ describe(__filename, () => {
     const father = {budget: 100}
     const {insertedId: fatherId} = await fatherColl.insertOne(father)
     const amount = 66
-
-    // check side message
-    natsEx.on('action.father.add-budget.ok', (data) => {
-      expect(data.fatherId).toBe(fatherId.toString())
-      expect(data.amount).toBe(amount)
-    })
 
     // call action
     await natsEx.call('action.father.add-budget', {fatherId: fatherId.toString(), amount})

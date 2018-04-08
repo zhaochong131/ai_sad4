@@ -10,14 +10,10 @@ module.exports = {
   validator: buildValidator({
     sitterId: Joi.string()
   }),
-  emitCases: {
-    ok: 'ok'
-  },
   async handler ({sitterId}) {
     const {'coll/sitter': sitterColl} = this.items
     await sitterColl.updateOne({_id: ObjectID(sitterId)}, {
       $unset: {budget: true}
     })
-    this.emit.ok({sitterId})
   }
 }

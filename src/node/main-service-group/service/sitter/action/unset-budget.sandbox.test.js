@@ -15,7 +15,7 @@ describe(__filename, () => {
   })
 
   it('should unset sitter budget', async () => {
-    expect.assertions(2)
+    expect.assertions(1)
 
     await holder.load(filterDefs(allDefs, [
       'service/sitter/action/unsetBudget'
@@ -26,12 +26,6 @@ describe(__filename, () => {
     // setup data
     const sitter = {budget: 100}
     const {insertedId: sitterId} = await sitterColl.insertOne(sitter)
-
-    // check side message
-    natsEx.on('action.sitter.unset-budget.ok', (data, message, topic) => {
-      console.log({topicc: topic})
-      expect(data.sitterId).toBe(sitterId.toString())
-    })
 
     // call action
     await natsEx.call('action.sitter.unset-budget', {
