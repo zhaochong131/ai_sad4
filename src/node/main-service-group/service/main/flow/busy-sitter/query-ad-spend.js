@@ -7,7 +7,7 @@ const topics = {
 }
 
 module.exports = {
-  type: 'action',
+  type: 'step',
   need: ['natsEx'],
   serviceName: 'main',
   flowName: 'busy-sitter',
