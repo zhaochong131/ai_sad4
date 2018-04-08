@@ -1385,93 +1385,7 @@ module.exports = function ({_, moment, weighted}) {
     ])
   }
   const _names = ['James', 'John', 'Robert', 'Michael', 'William', 'David', 'Richard', 'Joseph', 'Charles', 'Thomas', 'Christopher', 'Daniel', 'Matthew', 'George', 'Donald', 'Anthony', 'Paul', 'Mark', 'Edward', 'Steven', 'Kenneth', 'Andrew', 'Brian', 'Joshua', 'Kevin', 'Ronald', 'Timothy', 'Jason', 'Jeffrey', 'Frank', 'Gary', 'Ryan', 'Nicholas', 'Eric', 'Stephen', 'Jacob', 'Larry', 'Jonathan', 'Scott', 'Raymond', 'Justin', 'Brandon', 'Gregory', 'Samuel', 'Benjamin', 'Patrick', 'Jack', 'Henry', 'Walter', 'Dennis', 'Jerry', 'Alexander', 'Peter', 'Tyler', 'Douglas', 'Harold', 'Aaron', 'Jose', 'Adam', 'Arthur', 'Zachary', 'Carl', 'Nathan', 'Albert', 'Kyle', 'Lawrence', 'Joe', 'Willie', 'Gerald', 'Roger', 'Keith', 'Jeremy', 'Terry', 'Harry', 'Ralph', 'Sean', 'Jesse', 'Roy', 'Louis', 'Billy', 'Austin', 'Bruce', 'Eugene', 'Christian', 'Bryan', 'Wayne', 'Russell', 'Howard', 'Fred', 'Ethan', 'Jordan', 'Philip', 'Alan', 'Juan', 'Randy', 'Vincent', 'Bobby', 'Dylan', 'Johnny', 'Phillip', 'Victor', 'Clarence', 'Ernest', 'Martin', 'Craig', 'Stanley', 'Shawn', 'Travis', 'Bradley', 'Leonard', 'Earl', 'Gabriel', 'Jimmy', 'Francis', 'Todd', 'Noah', 'Danny', 'Dale', 'Cody', 'Carlos', 'Allen', 'Frederick', 'Logan', 'Curtis', 'Alex', 'Joel', 'Luis', 'Norman', 'Marvin', 'Glenn', 'Tony', 'Nathaniel', 'Rodney', 'Melvin', 'Alfred', 'Steve', 'Cameron', 'Chad', 'Edwin', 'Caleb', 'Evan', 'Antonio', 'Lee', 'Herbert', 'Jeffery', 'Isaac', 'Derek', 'Ricky', 'Marcus', 'Theodore', 'Elijah', 'Luke', 'Jesus', 'Eddie', 'Troy', 'Mike', 'Dustin', 'Ray', 'Adrian', 'Bernard', 'Leroy', 'Angel', 'Randall', 'Wesley', 'Ian', 'Jared', 'Mason', 'Hunter', 'Calvin', 'Oscar', 'Clifford', 'Jay', 'Shane', 'Ronnie', 'Barry', 'Lucas', 'Corey', 'Manuel', 'Leo', 'Tommy', 'Warren', 'Jackson', 'Isaiah', 'Connor', 'Don', 'Dean', 'Jon', 'Julian', 'Miguel', 'Bill', 'Lloyd', 'Charlie', 'Mitchell', 'Leon', 'Jerome', 'Darrell', 'Jeremiah', 'Alvin', 'Brett', 'Seth', 'Floyd', 'Jim', 'Blake', 'Micheal', 'Gordon', 'Trevor', 'Lewis', 'Erik', 'Edgar', 'Vernon', 'Devin', 'Gavin', 'Jayden', 'Chris', 'Clyde', 'Tom', 'Derrick', 'Mario', 'Brent', 'Marc', 'Herman', 'Chase', 'Dominic', 'Ricardo', 'Franklin', 'Maurice', 'Max', 'Aiden', 'Owen', 'Lester', 'Gilbert', 'Elmer', 'Gene', 'Francisco', 'Glen', 'Cory', 'Garrett', 'Clayton', 'Sam', 'Jorge', 'Chester', 'Alejandro', 'Jeff', 'Harvey', 'Milton', 'Cole', 'Ivan', 'Andre', 'Duane', 'Landon']
-
-  // controls
-  const _game = 'BA'
-  const _os = 'Android'
-  const _location = weighted([
-    '美国',
-    'T1 英语',
-    'T1 法语',
-    'T1 德语',
-    'T1 中文',
-    'ROW',
-    '欧盟 英语'
-  ])
-  const _language = {
-    '美国': 'en',
-    'T1 英语': 'en',
-    'T1 法语': 'fr',
-    'T1 德语': 'de',
-    'T1 中文': 'zh',
-    'ROW': 'en',
-    '欧盟 英语': 'en'
-  }[_location]
-  const _platformFacebookFeed = randomTrueFalse(3, 1)
-  const _platformFacebookSuggestedVideo = _platformFacebookFeed && randomTrueFalse()
-  const _platformInstagramStream = !_platformFacebookFeed || randomTrueFalse() // all other positions rely on facebook feed. so if facebook feed is disabled, the only instagram position must be selected
-  const _platformAudienceNetworkClassic = _platformFacebookFeed && randomTrueFalse()
-  const _platformAudienceNetworkRewardedVideo = _platformFacebookFeed && randomTrueFalse()
-
-  // fields
-  const name = `BA4 ${moment().format('YYYY-MM-DD HH:mm:ss')} ${weighted(_names)}`
-  const status = 'ACTIVE'
-  const dailyBudget = dollarToCent(5000)
-  const billingEvent = 'IMPRESSIONS'
-  const optimizationGoal = weighted([
-    // 'APP_INSTALLS',
-    'OFFSITE_CONVERSIONS'
-  ])
-  const bidAmount = {
-    'APP_INSTALLS': 0,
-    'OFFSITE_CONVERSIONS': {
-      '美国': randomDollar(150, 600),
-      'T1 英语': randomDollar(150, 600),
-      'T1 法语': randomDollar(150, 600),
-      'T1 德语': randomDollar(150, 600),
-      'T1 中文': randomDollar(150, 600),
-      'ROW': randomDollar(100, 350),
-      '欧盟 英语': randomDollar(150, 600)
-    }[_location]
-  }[optimizationGoal]
-  const attributionSpec = {
-    'APP_INSTALLS': undefined,
-    'OFFSITE_CONVERSIONS': [{'event_type': 'CLICK_THROUGH', 'window_days': 7}]
-  }[optimizationGoal]
-  const objective = 'APP_INSTALLS'
-  const buyingType = 'AUCTION'
-  const promotedObject = {
-    'APP_INSTALLS': {
-      'application_id': '634204786734953',
-      'object_store_url': 'http://play.google.com/store/apps/details?id=com.tap4fun.brutalage_test'
-    },
-    'OFFSITE_CONVERSIONS': {
-      'application_id': '634204786734953',
-      'object_store_url': 'http://play.google.com/store/apps/details?id=com.tap4fun.brutalage_test',
-      'custom_event_type': 'PURCHASE'
-    }
-  }[optimizationGoal]
-  const minAge = 18
-  const maxAge = 55
-  const appInstallState = 'not_installed'
-  const genders = [1]
-  const locationTypes = ['home', 'recent']
-  const countryGroups = {
-    'ROW': ['android_paid_store'],
-    '欧盟 英语': ['eea']
-  }[_location]
-  const countries = {
-    '美国': ['US'],
-    'T1 英语': ['CA', 'SG', 'GB', 'AU'],
-    'T1 法语': ['LU', 'FR'],
-    'T1 德语': ['SE', 'CH', 'DK', 'DE'],
-    'T1 中文': ['HK', 'TW']
-  }[_location]
-  const excludedPublisherCategories = [
-    'debated_social_issues',
-    'tragedy_and_conflict'
-  ]
-  const customAudiences = {
+  const _customAudience = {
     '美国': weighted([
       [
         {
@@ -2080,7 +1994,94 @@ module.exports = function ({_, moment, weighted}) {
         }
       ]
     ]),
+  }
+
+  // controls
+  const _game = 'BA'
+  const _os = 'Android'
+  const _location = weighted([
+    '美国',
+    'T1 英语',
+    'T1 法语',
+    'T1 德语',
+    'T1 中文',
+    'ROW',
+    '欧盟 英语'
+  ])
+  const _language = {
+    '美国': 'en',
+    'T1 英语': 'en',
+    'T1 法语': 'fr',
+    'T1 德语': 'de',
+    'T1 中文': 'zh',
+    'ROW': 'en',
+    '欧盟 英语': 'en'
   }[_location]
+  const _platformFacebookFeed = randomTrueFalse(3, 1)
+  const _platformFacebookSuggestedVideo = _platformFacebookFeed && randomTrueFalse()
+  const _platformInstagramStream = !_platformFacebookFeed || randomTrueFalse() // all other positions rely on facebook feed. so if facebook feed is disabled, the only instagram position must be selected
+  const _platformAudienceNetworkClassic = _platformFacebookFeed && randomTrueFalse()
+  const _platformAudienceNetworkRewardedVideo = _platformFacebookFeed && randomTrueFalse()
+
+  // fields
+  const name = `BA4 ${moment().format('YYYY-MM-DD HH:mm:ss')} ${weighted(_names)}`
+  const status = 'ACTIVE'
+  const dailyBudget = dollarToCent(5000)
+  const billingEvent = 'IMPRESSIONS'
+  const optimizationGoal = weighted([
+    // 'APP_INSTALLS',
+    'OFFSITE_CONVERSIONS'
+  ])
+  const bidAmount = {
+    'APP_INSTALLS': 0,
+    'OFFSITE_CONVERSIONS': {
+      '美国': randomDollar(150, 600),
+      'T1 英语': randomDollar(150, 600),
+      'T1 法语': randomDollar(150, 600),
+      'T1 德语': randomDollar(150, 600),
+      'T1 中文': randomDollar(150, 600),
+      'ROW': randomDollar(100, 350),
+      '欧盟 英语': randomDollar(150, 600)
+    }[_location]
+  }[optimizationGoal]
+  const attributionSpec = {
+    'APP_INSTALLS': undefined,
+    'OFFSITE_CONVERSIONS': [{'event_type': 'CLICK_THROUGH', 'window_days': 7}]
+  }[optimizationGoal]
+  const objective = 'APP_INSTALLS'
+  const buyingType = 'AUCTION'
+  const promotedObject = {
+    'APP_INSTALLS': {
+      'application_id': '634204786734953',
+      'object_store_url': 'http://play.google.com/store/apps/details?id=com.tap4fun.brutalage_test'
+    },
+    'OFFSITE_CONVERSIONS': {
+      'application_id': '634204786734953',
+      'object_store_url': 'http://play.google.com/store/apps/details?id=com.tap4fun.brutalage_test',
+      'custom_event_type': 'PURCHASE'
+    }
+  }[optimizationGoal]
+  const minAge = 18
+  const maxAge = 55
+  const appInstallState = 'not_installed'
+  const genders = [1]
+  const locationTypes = ['home', 'recent']
+  const countryGroups = {
+    'ROW': ['android_paid_store'],
+    '欧盟 英语': ['eea']
+  }[_location]
+  const countries = {
+    '美国': ['US'],
+    'T1 英语': ['CA', 'SG', 'GB', 'AU'],
+    'T1 法语': ['LU', 'FR'],
+    'T1 德语': ['SE', 'CH', 'DK', 'DE'],
+    'T1 中文': ['HK', 'TW']
+  }[_location]
+  const excludedPublisherCategories = [
+    'debated_social_issues',
+    'tragedy_and_conflict'
+  ]
+  const customAudiences = _customAudience[_location]
   const excludedGeoLocations = {
     'ROW': {
       'countries': [
