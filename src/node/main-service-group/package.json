@@ -8,6 +8,7 @@
     "test-offline": "jest --config ./jest.config.offline.js",
     "test-sandbox": "bash bin/sandbox-test.sh --config ./jest.config.sandbox.js --runInBand",
     "test-sandbox-parallel": "bash bin/sandbox-test-parallel.sh",
+    "test": "npm run test-offline && npm run test-sandbox",
     "lint": "eslint .",
     "fix": "eslint . --fix"
   },

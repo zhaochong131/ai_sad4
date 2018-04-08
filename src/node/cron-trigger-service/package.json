@@ -6,6 +6,7 @@
     "start": "node .",
     "jest": "jest",
     "test-sandbox": "bash bin/sandbox-test.sh --runInBand",
+    "test": "npm run test-sandbox",
     "lint": "eslint .",
     "fix": "eslint . --fix"
   },
