@@ -5,6 +5,7 @@ module.exports = {
     return {
       item: {
         natsUrl: env.NATS_URL,
+        natsNamespace: env.NATS_NAMESPACE,
 
         facebookAccessToken: env.FACEBOOK_ACCESS_TOKEN,
         facebookAdAccountId: env.FACEBOOK_AD_ACCOUNT_ID,
