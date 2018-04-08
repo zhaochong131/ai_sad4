@@ -35,7 +35,7 @@ describe(__filename, () => {
 
     // call action
     await natsEx.call('action.sitter.unset-budget', {
-      sitterId: sitterId.toString(),
+      sitterId: sitterId.toString()
     })
 
     // check

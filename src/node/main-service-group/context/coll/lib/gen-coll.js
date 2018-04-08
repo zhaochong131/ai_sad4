@@ -10,7 +10,7 @@ module.exports = function (file) {
       return {
         item: mongodb.collection(
           config.randomMongoColl
-            ? uuid()
+            ? uuid.v4()
             : config[collConfigKey]
         )
       }

@@ -6,12 +6,13 @@ module.exports = {
   build: async ({config, logger}) => {
     const {
       natsUrl,
-      natsNamespace
+      natsNamespace,
+      randomNatsNamespace
     } = config
 
-    // if config namespace to *, it will generate a random namespace
-    // this feature is helpful for test, but should not be used in production
-    const namespace = natsNamespace === '*' ? uuid.v4() : natsNamespace
+    const namespace = randomNatsNamespace
+      ? uuid.v4()
+      : natsNamespace
 
     const natsEx = await connect({
       url: natsUrl,

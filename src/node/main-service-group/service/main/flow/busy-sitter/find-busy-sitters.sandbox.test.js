@@ -25,14 +25,14 @@ describe(__filename, () => {
     const sitter = {status: 'busy'}
     const {insertedId: sitterId} = await sitterColl.insertOne(sitter)
 
-    //subscribe event
+    // subscribe event
     natsEx.on('step.main.busy-sitter.find-busy-sitters.ok', async ({sitter}) => {
       const {_id} = sitter
       try {
         expect(_id).toBe(sitterId.toString())
-        done ()
+        done()
       } catch (err) {
-        done (err)
+        done(err)
       }
     })
 
