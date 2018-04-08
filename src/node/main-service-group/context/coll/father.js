@@ -1,8 +1,1 @@
-module.exports = {
-  need: ['config', 'mongodb'],
-  build: async ({config, mongodb}) => {
-    return {
-      item: mongodb.collection(config.mongoCollFather)
-    }
-  }
-}
+module.exports = require('./lib/gen-coll')(__filename)
