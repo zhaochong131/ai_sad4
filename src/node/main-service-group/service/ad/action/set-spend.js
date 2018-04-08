@@ -1,14 +1,11 @@
 const Joi = require('joi')
 const buildValidator = require('n3h-joi-validator')
 
-/**
- * @deprecated use set-spend instead
- */
 module.exports = {
   type: 'action',
   need: ['natsEx', 'coll/ad'],
   serviceName: 'ad',
-  actionName: 'update-spend',
+  actionName: 'set-spend',
   validator: buildValidator({
     adId: Joi.string(),
     spend: Joi.number()
