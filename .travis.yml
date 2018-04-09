@@ -16,3 +16,6 @@ deploy:
   script: sh bin/build-image.sh
   on:
     branch: master
+
+notifications:
+   webhooks: https://oapi.dingtalk.com/robot/send?access_token=0abbabd2860ac8a508729e1422281703d41ac9bf55919519688ba1cbe03f50ea
