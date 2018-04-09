@@ -1,0 +1,18 @@
+sudo: required
+
+language: node_js
+
+node_js:
+  - "8"
+
+services:
+  - docker
+
+script:
+  - sh bin/install-dependencies.sh && sh bin/test.sh
+
+deploy:
+  provider: script
+  script: sh bin/build-image.sh
+  on:
+    branch: master
