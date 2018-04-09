@@ -2111,7 +2111,7 @@ module.exports = function ({_, moment, weighted}) {
     _platformAudienceNetworkRewardedVideo && 'rewarded_video'
   ])
   const userOs = {
-    'Android': 'Android_ver_6.0_and_above'
+    'Android': ['Android_ver_6.0_and_above']
   }[_os]
   const userDevice = {
     'Android': _devices['Android']['高端机型']
